@@ -1,8 +1,8 @@
-import './views/components/my-component';
+import './views/components/custom-controls'
+import 'htmx.org';
 
-const app = document.getElementById('app');
-const myComponent = document.createElement('my-component');
-
-if (app) {
-    app.appendChild(myComponent);
+declare global {
+    interface Window { htmx: any; }
 }
+
+window.htmx = require('htmx.org');

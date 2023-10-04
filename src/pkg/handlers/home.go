@@ -10,3 +10,5 @@ import (
 func HandleGetHome(ctx *gin.Context) {
 	ctx.HTML(http.StatusOK, "index", util.Map{})
 }
+
+func HandleAddTiming(ctx *gin.Context) {}

@@ -52,6 +52,7 @@ func initApp() (*gin.Engine, error) {
 	router.Use(handlers.DefaultErrorHandler())
 
 	router.GET("/", handlers.HandleGetHome)
+	router.POST("/increase", handlers.HandleAddTiming)
 
 	return router, nil
 }
