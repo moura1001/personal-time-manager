@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "webpack --watch --mode development"
+    "watch": "webpack --watch --mode development",
+    "css": "tailwindcss -i ./src/static/assets/main.css -o ./src/static/assets/app.css --watch"
   },
   "author": "Moura",
   "license": "ISC",
   "devDependencies": {
     "html-webpack-plugin": "^5.5.3",
+    "tailwindcss": "^3.3.3",
     "ts-loader": "^9.4.4",
     "typescript": "^5.2.2",
     "webpack": "^5.88.2",

@@ -4,8 +4,11 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Web Component Example</title>
+        <script src="/dist/htmx.min.js"></script>
+        {{ css "app.css" }}
     </head>
     <body>
+        {{include "timings"}}
         {{include "controls"}}
         <script src="/dist/bundle.js"></script>
     </body>

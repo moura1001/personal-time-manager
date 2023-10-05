@@ -1,5 +1,4 @@
-// reference: https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
-export class CustomControls extends HTMLElement {
+class CustomControls extends HTMLElement {
     constructor() {
         super();
     }
@@ -29,4 +28,4 @@ export class CustomControls extends HTMLElement {
     }
 }
 
-customElements.define('custom-controls', CustomControls);
+if(!customElements.get('custom-controls')) { customElements.define('custom-controls', CustomControls); }

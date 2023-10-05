@@ -7,6 +7,7 @@ import (
 	"io/fs"
 	"log"
 	"path/filepath"
+	"strings"
 
 	"github.com/foolin/goview"
 	"github.com/foolin/goview/supports/ginview"
@@ -52,7 +53,9 @@ func initApp() (*gin.Engine, error) {
 	router.Use(handlers.DefaultErrorHandler())
 
 	router.GET("/", handlers.HandleGetHome)
-	router.POST("/increase", handlers.HandleAddTiming)
+	router.POST("/increase", handlers.HandleIncreaseTiming)
+	router.POST("/consume", handlers.HandleConsumeTiming)
+	router.POST("/clear", handlers.HandleClearTimings)
 
 	return router, nil
 }
@@ -61,6 +64,7 @@ func createEngine() *ginview.ViewEngine {
 	engine := goview.New(goview.Config{
 		Root:      "src/static/views",
 		Extension: ".html",
+		Partials:  loadHTMLTemplates("index.html"),
 		Funcs: template.FuncMap{
 			"css": func(name string) (res template.HTML) {
 				filepath.Walk("./src/static/assets", func(path string, info fs.FileInfo, err error) error {
@@ -74,10 +78,32 @@ func createEngine() *ginview.ViewEngine {
 				})
 				return
 			},
+			"mod": func(i, j int) bool {
+				return i%j == 0
+			},
 		},
 		DisableCache: true,
 		Delims:       goview.Delims{Left: "{{", Right: "}}"},
 	})
 
 	return ginview.Wrap(engine)
+}
+
+func loadHTMLTemplates(masterTemplateName string) (tmpls []string) {
+	rootPath := filepath.Join("src", "static", "views")
+
+	filepath.Walk("./src/static/views", func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if filepath.Ext(info.Name()) == ".html" && info.Name() != masterTemplateName {
+			templateName := strings.TrimPrefix(path, rootPath)
+			templateName = strings.ReplaceAll(templateName, "\\", "/")
+			templateName = strings.TrimPrefix(templateName, "/")
+			templateName = strings.TrimSuffix(templateName, filepath.Ext(info.Name()))
+			tmpls = append(tmpls, templateName)
+		}
+		return nil
+	})
+	return
 }
