@@ -78,9 +78,6 @@ func createEngine() *ginview.ViewEngine {
 				})
 				return
 			},
-			"mod": func(i, j int) bool {
-				return i%j == 0
-			},
 		},
 		DisableCache: true,
 		Delims:       goview.Delims{Left: "{{", Right: "}}"},

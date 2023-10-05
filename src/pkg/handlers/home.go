@@ -15,10 +15,6 @@ func HandleGetHome(ctx *gin.Context) {
 }
 
 func HandleIncreaseTiming(ctx *gin.Context) {
-	if data.GetTimingType() != "" {
-		data.SetLastTimingStop()
-	}
-
 	data.AddTiming(data.TIMING_TYPE_INCREASE)
 
 	ctx.HTML(http.StatusOK, "index", util.Map{
@@ -27,10 +23,6 @@ func HandleIncreaseTiming(ctx *gin.Context) {
 }
 
 func HandleConsumeTiming(ctx *gin.Context) {
-	if data.GetTimingType() != "" {
-		data.SetLastTimingStop()
-	}
-
 	data.AddTiming(data.TIMING_TYPE_CONSUME)
 
 	ctx.HTML(http.StatusOK, "index", util.Map{
