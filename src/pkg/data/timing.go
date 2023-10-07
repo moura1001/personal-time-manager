@@ -20,6 +20,11 @@ type timing struct {
 
 func (t timing) FormatRange() string {
 	start := t.start.Format(timingFormatRange)
+
+	if t.stop.IsZero() {
+		return start
+	}
+
 	finish := t.stop.Format(timingFormatRange)
 	return fmt.Sprintf("%s - %s", finish, start)
 }
@@ -30,34 +35,45 @@ func (t timing) FormatDuration() string {
 		prefix = "-"
 	}
 
-	duration := t.stop.Sub(t.start).Round(time.Second)
-	hour := int(duration.Seconds() / 3600)
-	minute := int(duration.Seconds()/60) % 60
-	second := int(duration.Seconds()) % 60
+	if t.stop.IsZero() || t.start.After(t.stop) {
+		return fmt.Sprintf("%s0s", prefix)
+	}
+
+	duration := t.stop.Sub(t.start)
+
+	return fmt.Sprintf("%s%s", prefix, getFormattedDuration(duration.Abs()))
+}
+
+func getFormattedDuration(duration time.Duration) string {
+	d := duration.Round(time.Second)
+
+	hour := int(d.Seconds() / 3600)
+	minute := int(d.Seconds()/60) % 60
+	second := int(d.Seconds()) % 60
 
 	if hour > 0 {
 		if minute > 0 && second > 0 {
-			return fmt.Sprintf("%s%dh %dm %ds", prefix, hour, minute, second)
+			return fmt.Sprintf("%dh %dm %ds", hour, minute, second)
 		} else if minute > 0 {
-			return fmt.Sprintf("%s%dh %dm", prefix, hour, minute)
+			return fmt.Sprintf("%dh %dm", hour, minute)
 		} else if second > 0 {
-			return fmt.Sprintf("%s%dh %ds", prefix, hour, second)
+			return fmt.Sprintf("%dh %ds", hour, second)
 		} else {
-			return fmt.Sprintf("%s%dh", prefix, hour)
+			return fmt.Sprintf("%dh", hour)
 		}
 
 	} else if minute > 0 {
 		if second > 0 {
-			return fmt.Sprintf("%s%dm %ds", prefix, minute, second)
+			return fmt.Sprintf("%dm %ds", minute, second)
 		} else {
-			return fmt.Sprintf("%s%dm", prefix, minute)
+			return fmt.Sprintf("%dm", minute)
 		}
 
 	} else if second > 0 {
-		return fmt.Sprintf("%s%ds", prefix, second)
+		return fmt.Sprintf("%ds", second)
 
 	} else {
-		return fmt.Sprintf("%s0s", prefix)
+		return "0s"
 	}
 }
 
@@ -101,4 +117,32 @@ func setLastTimingStop() {
 func ClearTimings() {
 	setTimingType("")
 	timings = make([]timing, 0)
+}
+
+func GetFormattedTotalTiming() string {
+	if len(timings) == 0 {
+		return "0s"
+	}
+
+	var totalTiming time.Duration = 0
+
+	for _, timing := range timings {
+		if !timing.start.IsZero() && !timing.stop.IsZero() {
+			duration := timing.stop.Sub(timing.start)
+
+			if timing.timingType == TIMING_TYPE_INCREASE {
+				totalTiming += duration
+			} else {
+				totalTiming -= duration
+			}
+		}
+	}
+
+	formattedDuration := getFormattedDuration(totalTiming.Abs())
+
+	if totalTiming > 0 {
+		return formattedDuration
+	} else {
+		return fmt.Sprintf("- %s", formattedDuration)
+	}
 }

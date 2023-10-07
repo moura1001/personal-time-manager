@@ -1,7 +1,14 @@
-{{range .timings}}
-    <div class="p-2 border-b-2 border-b-gray-200 odd:bg-gray-200">
-        {{.FormatRange}} //// {{.FormatDuration}}
+<div id="timing-list" class="flex flex-col">
+    <div>
+        {{.totalTiming}}
     </div>
-{{else}}
-    <div>You have no timings.</div>
-{{end}}
+    <div>
+        {{range .timings}}
+            <div class="p-2 border-b-2 border-b-gray-200 odd:bg-gray-200">
+                {{.FormatRange}} //// {{.FormatDuration}}
+            </div>
+        {{else}}
+            <div>You have no timings.</div>
+        {{end}}
+    </div>
+</div>
