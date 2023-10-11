@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "webpack --watch --mode development",
+    "build": "webpack --mode production",
     "css": "tailwindcss -i ./src/static/assets/main.css -o ./src/static/assets/app.css --watch"
   },
   "author": "Moura",

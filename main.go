@@ -79,6 +79,9 @@ func createEngine() *ginview.ViewEngine {
 				return
 			},
 			"revIndex": func(index, length int) (revIndex int) { return (length - 1) - index },
+			"isNegative": func(timing string) bool {
+				return strings.HasPrefix(timing, "-")
+			},
 		},
 		DisableCache: true,
 		Delims:       goview.Delims{Left: "{{", Right: "}}"},
