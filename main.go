@@ -78,6 +78,7 @@ func createEngine() *ginview.ViewEngine {
 				})
 				return
 			},
+			"revIndex": func(index, length int) (revIndex int) { return (length - 1) - index },
 		},
 		DisableCache: true,
 		Delims:       goview.Delims{Left: "{{", Right: "}}"},
