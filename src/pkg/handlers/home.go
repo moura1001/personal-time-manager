@@ -43,6 +43,9 @@ func HandleDeleteTiming(ctx *gin.Context) {
 		ctx.String(404, "id not found")
 	}
 
+	ctx.HTML(http.StatusOK, "timing/timer", util.Map{
+		"oob": true,
+	})
 	ctx.HTML(http.StatusOK, "timing/total", util.Map{
 		"totalTiming": data.GetFormattedTotalTiming(),
 		"oob":         true,
