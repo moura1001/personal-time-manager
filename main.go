@@ -56,6 +56,7 @@ func initApp() (*gin.Engine, error) {
 	router.POST("/increase", handlers.HandleIncreaseTiming)
 	router.POST("/consume", handlers.HandleConsumeTiming)
 	router.POST("/clear", handlers.HandleClearTimings)
+	router.DELETE("/:id", handlers.HandleDeleteTiming)
 
 	return router, nil
 }

@@ -1,0 +1,12 @@
+<div id="timing-list" class="flex flex-col">
+    {{template "timing/total" .}}
+    <div>
+        {{range $i, $v := .timings}}            
+            {{with $timing := (index $.timings (revIndex $i (len $.timings)))}}
+                {{template "timing/item" $timing}}
+            {{end}}
+        {{else}}
+            <div>You have no timings.</div>
+        {{end}}
+    </div>
+</div>

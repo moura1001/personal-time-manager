@@ -1,0 +1,19 @@
+<div class="h-10 w-full flex flex-row gap-2 p-2 border-b-2 border-b-gray-200 odd:bg-gray-200">
+    {{with $timing := .}}
+    <svg hx-target="closest div" hx-swap="outerHTML" hx-delete="/{{$timing.Id}}"
+        class="hover:cursor-pointer" 
+        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+        <path
+            fill="#000"
+            d="M52 7H40V5c0-1.654-1.346-3-3-3H27c-1.654 0-3 1.346-3 3v2H12c-1.104 0-2 .896-2 2s.896 2 2 2h3.276L18 55c0 3.314 2.686 6 6 6h20c3.314 0 6-2.686 6-6l1.724-42H50c1.104 0 2-.896 2-2s-.896-2-2-2zM25 5c0-.553.447-1 1-1h10c.553 0 1 .447 1 1v2H25V5zm17 52c0 1.104-.896 2-2 2H24c-1.104 0-2-.896-2-2l-1.705-42H49l-1.705 42z"
+        />
+        <path fill="#000" d="M32 47a2 2 0 0 1-2-2V23a2 2 0 0 1 4 0v22a2 2 0 0 1-2 2z" />
+        <path fill="#000" d="M26 7h12v2H26z" />
+    </svg> 
+    {{with $tDuration := $timing.FormatDuration}}
+        <span>{{$timing.FormatRange}}</span>
+        <span>////</span>
+        <span class="{{if (isNegative $tDuration)}}text-red-600{{else}}text-green-600{{end}}">{{$tDuration}}</span>
+    {{end}}
+    {{end}}
+</div>

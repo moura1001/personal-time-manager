@@ -131,18 +131,29 @@ func GetFormattedTotalTiming() string {
 			duration := timing.stop.Sub(timing.start)
 
 			if timing.timingType == TIMING_TYPE_INCREASE {
-				totalTiming += duration
+				totalTiming += duration.Round(time.Second)
 			} else {
-				totalTiming -= duration
+				totalTiming -= duration.Round(time.Second)
 			}
 		}
 	}
 
 	formattedDuration := getFormattedDuration(totalTiming.Abs())
 
-	if totalTiming > 0 {
+	if totalTiming >= 0 {
 		return formattedDuration
 	} else {
 		return fmt.Sprintf("- %s", formattedDuration)
 	}
+}
+
+func DeleteTiming(id int) bool {
+	for i, timing := range timings {
+		if timing.Id == id {
+			timings = append(timings[:i], timings[i+1:]...)
+			return true
+		}
+	}
+
+	return false
 }

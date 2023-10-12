@@ -8,8 +8,8 @@
         {{ css "app.css" }}
     </head>
     <body>
-        {{include "timings"}}
-        {{include "controls"}}
+        {{template "timing/list" .}}
+        {{template "controls" .}}
         <script src="/dist/bundle.js"></script>
     </body>
 </html>
